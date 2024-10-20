@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BrightTrading Software - Dark Theme</title>
     <style>
-        /* Your existing CSS styles remain unchanged */
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
 
         * {
@@ -46,7 +45,6 @@
             border-radius: 5px;
             cursor: pointer;
             font-family: "Hind Siliguri", sans-serif;
-
         }
 
         nav .btn:hover {
@@ -59,7 +57,7 @@
 
         h2 {
             margin-bottom: 20px;
-            color: #f0f0f0; /* Keep the green highlight color */
+            color: #f0f0f0;
         }
 
         form {
@@ -76,22 +74,22 @@
         label {
             display: block;
             margin-bottom: 5px;
-            color: #f0f0f0; /* Light text color */
+            color: #f0f0f0;
         }
 
         input, select {
             width: 100%;
             padding: 10px;
-            background-color: #3a3a3a; /* Dark input background */
-            border: 1px solid #555; /* Darker border */
+            background-color: #3a3a3a;
+            border: 1px solid #555;
             border-radius: 5px;
-            color: #f0f0f0; /* Light text in input */
+            color: #f0f0f0;
             font-family: "Hind Siliguri", sans-serif;
         }
 
         input::placeholder, select {
             font-family: "Hind Siliguri", sans-serif;
-            color: #aaa; /* Light placeholder text */
+            color: #aaa;
         }
 
         button.submit-btn {
@@ -129,22 +127,57 @@
                 width: 100%;
             }
         }
+    </style>
+    <script>
+        // Function to submit the form data via AJAX
+        function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
 
-        /* Success dialog styling */
-        #success-dialog {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #006239;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 1000;
+            const form = event.target; // Get the form element
+            const formData = new FormData(form); // Create a FormData object with the form data
+
+            // Submit the form data via fetch
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    showSuccessDialog(); // Show success message if submission is successful
+                    form.reset(); // Optionally reset the form
+                } else {
+                    alert("There was an issue submitting your form. Please try again.");
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while submitting the form.");
+            });
         }
 
-    </style>
+        // Function to show the success dialog
+        function showSuccessDialog() {
+            const dialog = document.createElement('div');
+            dialog.textContent = "Your data has been submitted successfully!";
+            dialog.style.position = 'fixed';
+            dialog.style.top = '50%';
+            dialog.style.left = '50%';
+            dialog.style.transform = 'translate(-50%, -50%)';
+            dialog.style.padding = '20px';
+            dialog.style.backgroundColor = '#2ba16e';
+            dialog.style.color = '#fff';
+            dialog.style.borderRadius = '5px';
+            dialog.style.zIndex = '1000';
+
+            document.body.appendChild(dialog);
+
+            // Automatically hide the dialog after 3 seconds
+            setTimeout(() => {
+                document.body.removeChild(dialog);
+            }, 3000);
+        }
+    </script>
 </head>
 <body>
 
@@ -165,7 +198,7 @@
             <!-- Basic Info Section -->
             <section class="form-section">
                 <h2>সাধারণ তথ্য পূরণ করুন</h2>
-                <form id="trade-form">
+                <form id="tradeForm" action="https://docs.google.com/forms/d/e/1FAIpQLSf1YAp9EOKKVAMDMMagB5coIMF4I70J-stipSIeapzIRJSXFw/formResponse" method="POST" onsubmit="submitForm(event)">
 
                     <div class="form-group">
                         <label for="select-date">তারিখ নিবার্চন করুন</label>
@@ -187,7 +220,7 @@
                     </div>
             </section>
 
-            <!-- Trade Info Section (Aligned to the Right) -->
+            <!-- Trade Info Section -->
             <section class="form-section">
                 <h2>ট্রেডের তথ্য পূরণ করুন</h2>
                 <div class="form-group">
@@ -261,41 +294,7 @@
         </section>
     </div>
 
-    <!-- Success dialog -->
-    <div id="success-dialog">Form submitted successfully!</div>
-
 </div>
-
-<script>
-    document.getElementById("trade-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const form = event.target;
-
-        const formData = new FormData(form);
-
-        // Send form data via fetch to Google Forms
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors'
-        }).then(function() {
-            // Show success dialog
-            const successDialog = document.getElementById("success-dialog");
-            successDialog.style.display = "block";
-
-            // Hide the success dialog after 3 seconds
-            setTimeout(function() {
-                successDialog.style.display = "none";
-            }, 3000);
-
-            // Optionally, you can also reset the form
-            form.reset();
-        }).catch(function(error) {
-            console.error('Error submitting the form:', error);
-        });
-    });
-</script>
 
 </body>
 </html>
