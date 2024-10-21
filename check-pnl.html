@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrightTrading Software - Dark Theme</title>
+    <title>BrightTrading Software - Theme Toggle with Search</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
-        <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/2536/2536805.png">
+        
+        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -15,9 +16,7 @@
 
         body {
             font-family: "Hind Siliguri", sans-serif;
-            background-color: #1c1c1c;
-            color: #f0f0f0;
-            font-family: "Hind Siliguri", sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
@@ -31,16 +30,16 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 20px;
-            border-bottom: 2px solid #444;
+            border-bottom: 2px solid var(--border-color);
         }
 
         h1 {
-            color: #2ba16e;
+            color: var(--primary-color);
         }
 
         nav .btn {
-            background-color: #006239;
-            color: #fff;
+            background-color: var(--button-bg);
+            color: var(--button-text);
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -49,7 +48,7 @@
         }
 
         nav .btn:hover {
-            background-color: #1e7c52;
+            background-color: var(--button-hover-bg);
         }
 
         .form-section {
@@ -58,12 +57,12 @@
 
         h2 {
             margin-bottom: 20px;
-            color: #f0f0f0;
+            color: var(--text-color);
         }
 
         form {
-            background-color: #2b2b2b;
-            border: 1px solid #444;
+            background-color: var(--form-bg);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 20px;
         }
@@ -75,24 +74,24 @@
         label {
             display: block;
             margin-bottom: 5px;
-            color: #f0f0f0;
+            color: var(--text-color);
         }
 
         input, select {
             width: 100%;
             padding: 10px;
-            background-color: #3a3a3a;
-            border: 1px solid #555;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 5px;
-            color: #f0f0f0;
+            color: var(--text-color);
         }
 
         input::placeholder, select {
-            color: #aaa;
+            color: var(--placeholder-color);
         }
 
         button.submit-btn {
-            background-color: #006239;
+            background-color: var(--button-bg);
             color: white;
             padding: 10px;
             border: none;
@@ -102,7 +101,7 @@
         }
 
         button.submit-btn:hover {
-            background-color: #1e7c52;
+            background-color: var(--button-hover-bg);
         }
 
         /* Table Styles */
@@ -115,15 +114,49 @@
         th, td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #444;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            background-color: #333;
-            color: #fff;
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
         }
 
         td {
+            color: var(--text-color);
+        }
+
+        /* Light Theme */
+        body.light {
+            --primary-color: #006239;
+            --text-color: #1c1c1c;
+            --button-bg: #006239;
+            --button-hover-bg: #1e7c52;
+            --button-text: #fff;
+            --form-bg: #f9f9f9;
+            --border-color: #ddd;
+            --input-bg: #fff;
+            --placeholder-color: #aaa;
+            --table-header-bg: #f0f0f0;
+            --table-header-text: #333;
+            background-color: #fff;
+            color: #1c1c1c;
+        }
+
+        /* Dark Theme */
+        body.dark {
+            --primary-color: #2ba16e;
+            --text-color: #f0f0f0;
+            --button-bg: #006239;
+            --button-hover-bg: #1e7c52;
+            --button-text: #fff;
+            --form-bg: #2b2b2b;
+            --border-color: #444;
+            --input-bg: #3a3a3a;
+            --placeholder-color: #aaa;
+            --table-header-bg: #333;
+            --table-header-text: #fff;
+            background-color: #1c1c1c;
             color: #f0f0f0;
         }
 
@@ -138,8 +171,7 @@
         }
     </style>
 </head>
-<body>
-
+<body class="dark"> <!-- Default to dark theme -->
     <div class="container">
         <header>
             <h1>ব্রাইট ফরেক্স ট্রেডিং</h1>
@@ -151,10 +183,11 @@
                     <button class="btn">তথ্য বিস্তারিত দেখুন</button>
                 </a>
             </nav>
+            <button class="btn" id="theme-toggle">Toggle Theme</button>
         </header>
 
-        <div class="search-bar">
-            <input type="text" id="search-input" placeholder="Search for trades..." onkeyup="filterTable()">
+        <div class="search-bar" style="margin-top: 20px;">
+            <input type="text" id="search-input" placeholder="Search for trades..." onkeyup="filterTable()" style="width: 100%; padding: 10px;">
         </div>
 
         <!-- Table for showing data -->
@@ -253,6 +286,15 @@
                     rows[i].style.display = match ? "" : "none";
                 }
             }
+
+            // Theme toggle functionality
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            themeToggleBtn.addEventListener('click', () => {
+                body.classList.toggle('dark');
+                body.classList.toggle('light');
+            });
         </script>
 
     </div>
